@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RabbitMqProductAPI.Models;
+using RabbitMqProductAPI.Services;
 
 namespace RabbitMqProductAPI.DBContext
 {
@@ -15,6 +16,13 @@ namespace RabbitMqProductAPI.DBContext
         {
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            new DbInitializer(modelBuilder).Seed();
+        }
+        
 
         public DbSet<Product> Products { get; set; }
     }
